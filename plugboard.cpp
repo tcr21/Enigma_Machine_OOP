@@ -1,3 +1,4 @@
+// Tiphaine Ramenason
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -35,7 +36,7 @@ int Plugboard::p_configure(const char input_configuration_file[100])
         // Check 2. Check number of parameters does not exceed the limit of 26. Note: we wish to return this error prior to other errors if the max number of parameters is exceeded
         if (! check_count_of_numbers_below_max(count_numbers, input_configuration_file))
         {
-            return 10; 
+            return 6; 
         }
         
         // Check 3. Check that all characters are numeric

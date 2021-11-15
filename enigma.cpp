@@ -1,3 +1,4 @@
+// Tiphaine Ramenason
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -236,9 +237,10 @@ int Enigma::check_config_rotors()
 // Check & config 3. Declare check_input_characters helper function: checks that an input character is valid (A-Z)
 bool Enigma::check_input_character(char letter)
 {
-    if (letter < 65 || letter > 90)
+    int number = letter;
+    if (number < 65 || number > 90)
     {
-        cerr << "ERROR. You have input an invalid character: " << letter << ". Please also check your other characters, and ensure you only include capital letters from A-Z. \n"; 
+        cerr << " ...ERROR. You have input an invalid character: " << letter << ". Please also check your other characters, and ensure you only include capital letters from A-Z. \n"; 
         return false;
     }
     return true;

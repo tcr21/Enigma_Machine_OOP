@@ -1,3 +1,4 @@
+// Tiphaine Ramenason
 #ifndef ROTOR_H
 #define ROTOR_H
 
