@@ -1,4 +1,4 @@
-// Tiphaine Ramenason
+// TRamenason
 #ifndef REFLECTOR_H
 #define REFLECTOR_H
 

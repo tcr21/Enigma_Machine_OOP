@@ -1,4 +1,4 @@
-// Tiphaine Ramenason
+// TRamenason
 #ifndef PLUGBOARD_H
 #define PLUGBOARD_H
 

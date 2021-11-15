@@ -1,4 +1,4 @@
-// Tiphaine Ramenason
+// TRamenason
 #include "enigma.h"
 
 using namespace std; 

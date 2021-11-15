@@ -1,4 +1,4 @@
-// Tiphaine Ramenason
+// TRamenason
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -87,10 +87,12 @@ int Enigma::e_encrypt_message()
     while (!cin.eof())
     {
         // Check characters are valid
-        if (! check_input_character(input_letter))
+        int error_input_char_returned = check_input_character(input_letter);
+        if (error_input_char_returned)
         {
-            return 2; 
+            return error_input_char_returned;
         }
+
         // Put into input vector to echo user input upon conclusion (when cin stream closed by user)
         input_message.push_back(input_letter); 
 
@@ -235,15 +237,15 @@ int Enigma::check_config_rotors()
 
 
 // Check & config 3. Declare check_input_characters helper function: checks that an input character is valid (A-Z)
-bool Enigma::check_input_character(char letter)
+int Enigma::check_input_character(char letter)
 {
     int number = letter;
     if (number < 65 || number > 90)
     {
         cerr << " ...ERROR. You have input an invalid character: " << letter << ". Please also check your other characters, and ensure you only include capital letters from A-Z. \n"; 
-        return false;
+        return 2;
     }
-    return true;
+    return 0;
 }
 
 

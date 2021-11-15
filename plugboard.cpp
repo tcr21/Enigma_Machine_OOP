@@ -1,4 +1,4 @@
-// Tiphaine Ramenason
+// TRamenason
 #include <iostream>
 #include <fstream>
 #include <map>
