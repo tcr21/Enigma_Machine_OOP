@@ -1,4 +1,4 @@
-// TRamenason
+// Tiphaine Ramenason
 #include "enigma.h"
 
 using namespace std; 
@@ -17,7 +17,11 @@ int main(int argc, char** argv)
     }
 
     // Encrypt message
-    enigma.e_encrypt_message();
+    error_returned = enigma.e_encrypt_message();
+    if (error_returned)
+    {
+        return (error_returned);
+    }
 
     return 0;
 }

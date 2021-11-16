@@ -1,4 +1,4 @@
-// TRamenason
+// Tiphaine Ramenason
 #ifndef ENIGMA_H
 #define ENIGMA_H
 
@@ -39,7 +39,7 @@ class Enigma
         int check_config_rotors(); 
 
         // Check & config 3. Declare check_input_characters helper function: checks that an input character is valid (A-Z)
-        int check_input_character(char letter); 
+        bool check_input_character(char letter); 
         
         
         // IV. HELPER FUNCTIONS FOR MOVING THROUGH ROTORS
