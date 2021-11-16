@@ -1,11 +1,9 @@
-// Tiphaine Ramenason
+// Tiphaine Ramenason  
 #ifndef ROTOR_H
 #define ROTOR_H
 
 #include <vector>
 #include <map>
-
-using namespace std; 
 
 class Rotor
 {
@@ -17,11 +15,11 @@ class Rotor
         const char* ro_position_configuration_file; 
         
         // Declare rotor mappings
-        map <int, int> ro_mapping;
-        map <int, int> ro_mapping_back;
+        std::map <int, int> ro_mapping;
+        std::map <int, int> ro_mapping_back;
 
         // Declare notches vector
-        vector <int> notches_vector; 
+        std::vector <int> notches_vector; 
 
         // Declare rotor index (eg. rotor 0 of 3 rotors numbered 0-3, going right to left)
         int rotor_index_right_to_left; 
@@ -33,10 +31,10 @@ class Rotor
         // II. HELPER FUNCTIONS FOR ERROR CHECKS (MAPPINGS/ NOTCHES & POSITION)
 
         // Check 1. Declare check_open_file helper function: opens file and check for any errors opening file
-        bool check_open_file(const char* input_configuration_file, ifstream& in_stream); 
+        bool check_open_file(const char* input_configuration_file, std::ifstream& in_stream); 
 
         // Check 2. Declare check_file_not_empty helper function: checks file is not empty (0 is an invalid number of parameters)
-        bool check_file_not_empty(const char* input_configuration_file, ifstream& in_stream); 
+        bool check_file_not_empty(const char* input_configuration_file, std::ifstream& in_stream); 
         
         // Check 3. Declare check_count_of_numbers_below_max helper function: Check number of parameters does not exceed the limit of 52. Note: we use invalid rotor mapping error code for this. We wish to return this error prior to other errors if the max number of parameters is exceeded
         bool check_count_of_numbers_below_max(int count_numbers, const char* input_configuration_file); 
@@ -48,10 +46,10 @@ class Rotor
         bool check_valid_index(int number, int count_numbers, const char* input_configuration_file); 
 
         // Check 6. Declare check_number_not_mapped_to_multiple helper function: checks number is not being mapped to multiple numbers
-        bool check_number_not_mapped_to_multiple(map<int, int>::iterator iterator_to_number, int number, int count_numbers, const char* input_configuration_file); 
+        bool check_number_not_mapped_to_multiple(std::map<int, int>::iterator iterator_to_number, int number, int count_numbers, const char* input_configuration_file); 
 
         // Check 7. Declare check_multiple_notches_not_at_same_position helper function: checks file is not trying to put multiple notches at the same position
-        bool check_multiple_notches_not_at_same_position(vector <int> notches_vector, int i, int number, int count_numbers, const char* input_configuration_file); 
+        bool check_multiple_notches_not_at_same_position(std::vector <int> notches_vector, int i, int number, int count_numbers, const char* input_configuration_file); 
 
         // Check 8. Declare check_count_of_numbers_above_min helper function: checks the count of numbers is at least 26
         bool check_count_of_numbers_above_min(int count_numbers, const char* input_configuration_file); 
@@ -63,10 +61,10 @@ class Rotor
         // III. HELPER FUNCTIONS FOR CONFIGURATION (MAPPING/ NOTCHES)
 
         // Configure step 1. Declare insert_pair_into_mapping helper function: inserts pair into rotor mappings
-        void insert_into_mapping(int& key, int& value, map <int, int>& mapping);
+        void insert_into_mapping(int& key, int& value, std::map <int, int>& mapping);
 
         // Configure step 2. Declare insert_into_notches_vector helped function: inserts pair into rotor notches vector
-        void insert_into_notches_vector(int& number, vector <int>& vector, int count_numbers);
+        void insert_into_notches_vector(int& number, std::vector <int>& vector, int count_numbers);
 
         
         // IV. HELPER FUNCTIONS FOR CONFIGURATION (POSITION)

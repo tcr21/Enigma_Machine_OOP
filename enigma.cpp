@@ -1,4 +1,4 @@
-// Tiphaine Ramenason
+// Tiphaine Ramenason  
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -79,8 +79,8 @@ int Enigma::e_encrypt_message()
     vector <char> input_message = {};
     vector <char> encrypted_message = {};
 
-    // Ask user for input
-    cout << "\nWelcome to Enigma! Please input the message you wish to encrypt. The encrypted message will appear on the screen. Once this is done, press ctrl+D to close the standard input stream, get a recap, and return to command line. \n"; 
+    /* // Ask user for input
+    cout << "\nWelcome to Enigma! Please input the message you wish to encrypt. The encrypted message will appear on the screen. Once this is done, press ctrl+D to close the standard input stream, get a recap, and return to command line. \n"; // Test */
     
     // Check each character
     cin >> ws >> input_letter;
@@ -92,7 +92,7 @@ int Enigma::e_encrypt_message()
             return 2; 
         }
 
-        // Put into input vector to echo user input upon conclusion (when cin stream closed by user)
+        // Put into input vector in case wish to echo user input upon conclusion (when cin stream closed by user), for testing purposes
         input_message.push_back(input_letter); 
 
         // Encrypt & print to screen
@@ -101,14 +101,14 @@ int Enigma::e_encrypt_message()
         encrypted_letter = encrypted_number + 65; 
         cout << encrypted_letter; 
 
-        // Put into encrypted vector to repeat encrypted version of message upon conclusion (when cin stream closed by user)
+        // Put into encrypted vector in case wish to repeat encrypted version of message upon conclusion (when cin stream closed by user), for testing purposes
         encrypted_message.push_back(encrypted_letter); 
 
         // Move to next character
         cin >> ws >> input_letter; 
     }
-
-    // Echo user input and result once again, when user closes cin stream
+    cout << endl; 
+    /* // Echo user input and result once again, when user closes cin stream // Test
     cout << "\n \nTo recap, your message: \n"; 
     int input_message_length = input_message.size(); 
     for (int i = 0; i < input_message_length; i++) 
@@ -121,7 +121,7 @@ int Enigma::e_encrypt_message()
     {
         cout << encrypted_message[i];
     } 
-    cout << "\nThanks for using enigma today! \n \n"; 
+    cout << "\nThanks for using enigma today! \n \n"; */
 
     return 0;   
 }

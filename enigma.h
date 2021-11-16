@@ -1,16 +1,11 @@
-// Tiphaine Ramenason
+// Tiphaine Ramenason  
 #ifndef ENIGMA_H
 #define ENIGMA_H
 
 #include <vector>
-#include <map>
-#include <string>
-#include <cstring>
 #include "plugboard.h"
 #include "reflector.h"
 #include "rotor.h"
-
-using namespace std; 
 
 class Enigma
 {
@@ -18,7 +13,7 @@ class Enigma
         // I. CONFIGURATION FILES
         char plugboard_configuration_file[100];
         char reflector_configuration_file[100];
-        vector <char*> rotor_configuration_files;
+        std::vector <char*> rotor_configuration_files;
         char rotor_position_configuration_file[100];
         bool enigma_is_configured = false;
         
@@ -26,7 +21,7 @@ class Enigma
         // II. MACHINE PARTS
         Plugboard plugboard;
         int count_rotors = 0;
-        vector <Rotor*> vector_rotors; 
+        std::vector <Rotor*> vector_rotors; 
         Reflector reflector; 
 
 
