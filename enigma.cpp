@@ -1,4 +1,4 @@
-// Tiphaine Ramenason  
+// Tiphaine Ramenason
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -107,7 +107,6 @@ int Enigma::e_encrypt_message()
         // Move to next character
         cin >> ws >> input_letter; 
     }
-    cout << endl; 
     /* // Echo user input and result once again, when user closes cin stream // Test
     cout << "\n \nTo recap, your message: \n"; 
     int input_message_length = input_message.size(); 

@@ -18,4 +18,3 @@ rotor.o: rotor.cpp rotor.h
 
 clean:
 	rm -f *.o enigma
-

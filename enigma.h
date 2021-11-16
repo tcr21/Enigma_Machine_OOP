@@ -1,4 +1,4 @@
-// Tiphaine Ramenason  
+// Tiphaine Ramenason
 #ifndef ENIGMA_H
 #define ENIGMA_H
 
