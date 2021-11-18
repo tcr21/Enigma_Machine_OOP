@@ -13,8 +13,6 @@ using namespace std;
 // Function 1. Declare ro_configure_mappings_notches function: checks rotor configuration file for errors, and uses it to configure rotor maps, notches, and set rotor configuration file data member
 int Rotor::ro_configure_mappings_notches(const char* input_configuration_file)
 {
-    /* cout << "\nStarting Rotor configuration... \n"; // Test */ 
-
     // Declare input stream: used to access file
     ifstream in_stream; 
 
@@ -53,7 +51,6 @@ int Rotor::ro_configure_mappings_notches(const char* input_configuration_file)
 
         // Convert characters into integers
         current_number = stoi(number_array);
-        /* cout << current_number << " "; // Test */
         
         // Check 5. Check that all numbers are a valid index (between 0-25)
         if (! check_valid_index(current_number, count_numbers, input_configuration_file))
@@ -62,7 +59,7 @@ int Rotor::ro_configure_mappings_notches(const char* input_configuration_file)
         }
 
         // Check configuration
-        if (count_numbers < 26) // Number is part of rotor mapping
+        if (count_numbers < MAX_ALPHABET_COUNT) // Number is part of rotor mapping
         {
             for (auto iterator_to_number = ro_mapping.begin(); iterator_to_number != ro_mapping.end(); iterator_to_number++)
             {
@@ -73,11 +70,8 @@ int Rotor::ro_configure_mappings_notches(const char* input_configuration_file)
                 }
             }
             // Configure step 1. Insert into rotor mappings
-            /* cout << "Mappings: "; // Test */
             insert_into_mapping(count_numbers, current_number, ro_mapping);
-            /* cout << ", "; // Test */
             insert_into_mapping(current_number, count_numbers, ro_mapping_back);
-            /* cout << " | "; // Test */
         }
         else // Number is part of notches
         {
@@ -110,12 +104,8 @@ int Rotor::ro_configure_mappings_notches(const char* input_configuration_file)
         return 7; 
     }
 
-    /* cout << "Success! All checks in " << input_configuration_file << " have been completed \n"; // Test
-    cout << "Success! Rotor mapping and notches have been configured \n"; // Test */
-
     // Set rotor configuration file data member to input file which has just been checked
     ro_configuration_file = input_configuration_file;
-    /* cout << "Success! Rotor configuration file has been set to " << ro_configuration_file << endl; // Test */
 
     return 0; 
 }
@@ -123,8 +113,6 @@ int Rotor::ro_configure_mappings_notches(const char* input_configuration_file)
 // Function 2. Declare ro_configure_position function: checks rotor position configuration file for errors, and uses it to configure starting position of rotor and set rotor number data member
 int Rotor::ro_configure_position(const char*input_configuration_file, int count_rotors, int initial_rotor_index, int converted_rotor_index)
 {
-    /* cout << "\nStarting Rotor position configuration... \n"; // Test */
-
     // Declare input stream: used to access file
     ifstream in_stream; 
 
@@ -151,8 +139,7 @@ int Rotor::ro_configure_position(const char*input_configuration_file, int count_
 
         // Convert characters into integers
         current_number = stoi(number_array);
-        /* cout << current_number << ", "; // Test */
-        
+       
         // Check 3. Check that all numbers are a valid index (between 0-25)
         if (! check_valid_index(current_number, count_numbers, input_configuration_file))
         {
@@ -179,18 +166,12 @@ int Rotor::ro_configure_position(const char*input_configuration_file, int count_
     }
 
     // PLEASE NOTE: if there are more positions in the file than there are rotors, the extra positions are simply ignored and the configuration proceeds
-    if (count_numbers > count_rotors)
-    {
-        /* cout << "Please note that file " << input_configuration_file << " contains " << count_numbers << " starting positions, yet there are only " << count_rotors << " rotors. The extra starting positions in the file are simply being discarded and configuration is proceeding normally \n"; // Test */
-    }
 
     // Set rotor position configuration file data member to input file which has just been checked
     ro_position_configuration_file = input_configuration_file;
-    /* cout << "Success! Rotor of initial index " << initial_rotor_index << " has had its position configuration file set to " << ro_position_configuration_file << endl; // Test */
 
     // Set rotor index (right to left) data member to converted rotor index (ie right to left, not left to right)
     rotor_index_right_to_left = converted_rotor_index; 
-    /* cout << "Success! Rotor of initial index " << initial_rotor_index << " has had its converted index (right to left) set to " << rotor_index_right_to_left << endl; // Test */
 
     return 0;
 }
@@ -206,11 +187,9 @@ bool Rotor::notch_is_hit()
     {
         if (rotor_position == notches_vector[i])
         {
-            /* cout << "Rotor of converted index " << rotor_index_right_to_left << " has a notch that has been hit at rotor position " << rotor_position << endl; // Test */
             return true; 
         }
     }
-    /* cout << "Rotor of converted index " << rotor_index_right_to_left << " does not have a notch at rotor position " << rotor_position << endl; // Test */
     return false; 
 }
 
@@ -218,7 +197,7 @@ bool Rotor::notch_is_hit()
 void Rotor::rotate()
 {
     // If index 25 (Z) on rim reaches the 'absolute' top, rotation means index 25 (Z) on rim 'drops' to the bottom, and index 0 (A) on rim finds itself at the top given circular nature
-    if (rotor_position == 25)
+    if (rotor_position == MAX_ALPHABET_INDEX)
     {
         rotor_position = 0; 
     }
@@ -226,7 +205,6 @@ void Rotor::rotate()
     {
         rotor_position++; 
     }
-    /* cout << "Rotor of converted index " << rotor_index_right_to_left << " has rotated. Updated rotor position is " << rotor_position << endl; // Test */
 }
 
 
@@ -238,9 +216,9 @@ int Rotor::ro_encrypt(int input_number)
     int encrypted_number; 
 
     // Adjust number at input considering rotor position (needs to be relative to absolute frame) & encrypt
-    if ((input_number + rotor_position) >= 26)
+    if ((input_number + rotor_position) >= MAX_ALPHABET_COUNT)
     {
-        encrypted_number = ro_mapping[input_number + rotor_position - 26]; 
+        encrypted_number = ro_mapping[input_number + rotor_position - MAX_ALPHABET_COUNT]; 
     }
     else
     {
@@ -250,14 +228,13 @@ int Rotor::ro_encrypt(int input_number)
     // Adjust number at output considering rotor position (needs to be relative to absolute frame before moving on to next machine component)
     if ((encrypted_number - rotor_position) < 0)
     {
-        encrypted_number = encrypted_number - rotor_position + 26; 
+        encrypted_number = encrypted_number - rotor_position + MAX_ALPHABET_COUNT; 
     }
     else
     {
         encrypted_number = encrypted_number - rotor_position;
     }
 
-    /* cout << "On way forward, " << input_number << " was encrypted to " << encrypted_number << endl; // Test */
     return encrypted_number; 
 }
 
@@ -266,9 +243,9 @@ int Rotor::ro_encrypt_back(int input_number)
 {
     int encrypted_number; 
 
-    if ((input_number + rotor_position) >= 26)
+    if ((input_number + rotor_position) >= MAX_ALPHABET_COUNT)
     {
-        encrypted_number = ro_mapping_back[input_number + rotor_position - 26]; 
+        encrypted_number = ro_mapping_back[input_number + rotor_position - MAX_ALPHABET_COUNT]; 
     }
     else
     {
@@ -278,14 +255,13 @@ int Rotor::ro_encrypt_back(int input_number)
     // Adjust number at output considering rotor position (needs to be relative to absolute frame before moving on to next machine component)
     if ((encrypted_number - rotor_position) < 0)
     {
-        encrypted_number = encrypted_number - rotor_position + 26; 
+        encrypted_number = encrypted_number - rotor_position + MAX_ALPHABET_COUNT; 
     }
     else
     {
         encrypted_number = encrypted_number - rotor_position;
     }
 
-    /* cout << "On way back, " << input_number << " was encrypted to " << encrypted_number << endl; // Test */
     return encrypted_number; 
 }
 
@@ -343,7 +319,7 @@ bool Rotor::check_numeric_characters(char number_array[10], int count_numbers, c
 // Check 5. Define check_valid_index helper function: checks that all numbers are a valid index (between 0-25)
 bool Rotor::check_valid_index(int number, int count_numbers, const char input_configuration_file[100])
 {
-    if (number < 0 || number > 25)
+    if (number < 0 || number > MAX_ALPHABET_INDEX)
         {
             cerr << "ERROR. Invalid index: " << number << ", at position " << count_numbers << " in file " << input_configuration_file << ", is not between 0 and 25 \n"; 
             return false; 
@@ -376,12 +352,12 @@ bool Rotor::check_multiple_notches_not_at_same_position(vector <int> notches_vec
 // Check 8. Define check_count_of_numbers_above_min helper function: checks the count of numbers is at least 26
 bool Rotor::check_count_of_numbers_above_min(int count_numbers, const char input_configuration_file[100])
 {
-    if (count_numbers < 26)
+    if (count_numbers < MAX_ALPHABET_COUNT)
     {
         cerr << "ERROR. Incorrect number of rotor parameters in file " << input_configuration_file << ": " << count_numbers << " is below minimum of 26 parameters required \n"; 
         return false; 
     }
-    /* cout << "There are " << count_numbers << " numbers in file " << input_configuration_file << endl; // Test */
+    
     return true; 
 }
 
@@ -403,14 +379,12 @@ bool Rotor::check_count_of_numbers_above_rotor_index(int count_numbers, int init
 void Rotor::insert_into_mapping(int& key, int& value, map <int, int>& mapping)
 {
     pair <int, int> p1(key, value);
-    /* cout << p1.first << " " << p1.second; // Test */
     mapping.insert(p1);
 } 
 
 // Configure step 2. Declare insert_into_notches_vector helped function: inserts pair into rotor notches vector
 void Rotor::insert_into_notches_vector(int& number, vector <int>& vector, int count_numbers)
 {
-    /* cout << "Notch: " << number << ", at position " << count_numbers << "| "; // Test */ 
     notches_vector.push_back(number); 
 }
 
@@ -423,7 +397,6 @@ void Rotor::select_rotor_position(int count_numbers, int initial_rotor_index, in
     if (count_numbers == initial_rotor_index)
     {
         rotor_position = current_number;
-        /* cout << "Success! Rotor of initial index " << initial_rotor_index << " has had its position set to " << rotor_position << " as number of same index " << count_numbers << " in the rotor position file is " << current_number << endl; // Test */
     }
 }
 

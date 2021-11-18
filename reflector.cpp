@@ -13,8 +13,6 @@ using namespace std;
 // Function 1. Define re_configure function: reflector configuration file for errors, and uses it to configure reflector map and set reflector configuration file data member
 int Reflector::re_configure(const char input_configuration_file[100])
 {
-    /* cout << "\nStarting Reflector configuration... \n"; // Test */
-
     // Declare input stream: used to access file
     ifstream in_stream; 
 
@@ -53,8 +51,7 @@ int Reflector::re_configure(const char input_configuration_file[100])
 
         // Convert characters into integers
         second_number = stoi(number_array); 
-        /* cout << second_number << ", "; // Test */
-        
+       
         // Check 5. Check that all numbers are a valid index (between 0-25)
         if (! check_valid_index(second_number, count_numbers, input_configuration_file))
         {
@@ -113,12 +110,8 @@ int Reflector::re_configure(const char input_configuration_file[100])
         return 10; 
     }
 
-    /* cout << "Success! All checks in " << input_configuration_file << " have been completed \n"; // Test */
-    /* cout << "Success! Reflector mapping has been configured \n"; // Test */
-
     // Set reflector configuration file data member to input file which has just been checked
     re_configuration_file = input_configuration_file;
-    /* cout << "Success! Reflector configuration file has been set to " << re_configuration_file << endl; // Test */
 
     return 0; 
 }
@@ -126,7 +119,6 @@ int Reflector::re_configure(const char input_configuration_file[100])
 // Function 2. Define re_encrypt function: encrypts a number that passes through the reflector
 int Reflector::re_encrypt(int input_number)
 {
-    /* cout << "Reflector has encrypted " << input_number << " to " << re_mapping[input_number] << endl; // Test */
     return re_mapping[input_number]; 
 }
 
@@ -161,7 +153,7 @@ bool Reflector::check_file_not_empty(const char input_configuration_file[100], i
 // Check 3. Define check_count_of_numbers_below_max helper function: checks number of parameters does not exceed the limit of 26. Note: we wish to return this error prior to other errors if the max number of parameters is exceeded
 bool Reflector::check_count_of_numbers_below_max(int count_numbers, const char input_configuration_file[100])
 {
-    if (count_numbers >= 26)
+    if (count_numbers >= MAX_ALPHABET_COUNT)
     {
         cerr << "ERROR. File " << input_configuration_file << " has more than 26 parameters \n"; 
         return false;
@@ -186,7 +178,7 @@ bool Reflector::check_numeric_characters(char number_array[10], int count_number
 // Check 5. Define check_valid_index helper function: checks that all numbers are a valid index (between 0-25)
 bool Reflector::check_valid_index(int number, int count_numbers, const char input_configuration_file[100])
 {
-    if (number < 0 || number > 25)
+    if (number < 0 || number > MAX_ALPHABET_INDEX)
         {
             cerr << "ERROR. Invalid index: " << number << ", at position " << count_numbers << " in file " << input_configuration_file << ", is not between 0 and 25 \n"; 
             return false; 
@@ -219,12 +211,11 @@ bool Reflector::check_number_not_mapped_to_itself(int first_number, int second_n
 // Check 8. Define check_count_of_numbers_even helper function: checks the count of numbers is even
 bool Reflector::check_count_of_numbers_correct(int count_numbers, const char input_configuration_file[100])
 {
-    if (count_numbers != 26)
+    if (count_numbers != MAX_ALPHABET_COUNT)
     {
         cerr << "ERROR. Incorrect number of reflector parameters in file " << input_configuration_file << ": " << count_numbers << " is not equal to 26 (exactly 13 pairs are needed) \n"; 
         return false; 
     }
-    /* cout << "There are " << count_numbers << " numbers in file " << input_configuration_file << endl; // Test */
     return true; 
 }            
                 
@@ -236,8 +227,6 @@ void Reflector::insert_pair_into_mapping(int& first_number, int& second_number, 
 {
     pair <int, int> p1(first_number, second_number);
     pair <int, int> p2(second_number, first_number);
-    /* cout << p1.first << " " << p1.second << ", "; // Test */
     mapping.insert(p1);
-    /* cout << p2.first << " " << p2.second << endl; // Test */
     mapping.insert(p2);
 } 

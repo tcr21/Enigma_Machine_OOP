@@ -8,7 +8,11 @@
 class Rotor
 {
     private:
-        // I. DATA MEMBERS
+        // I. CONSTANT VARIABLES
+        const int MAX_ALPHABET_COUNT = 26;
+        const int MAX_ALPHABET_INDEX = 25;
+        
+        // II. DATA MEMBERS
 
         // Declare configuration files for rotor
         const char* ro_configuration_file; 
@@ -28,7 +32,7 @@ class Rotor
         int rotor_position; 
 
         
-        // II. HELPER FUNCTIONS FOR ERROR CHECKS (MAPPINGS/ NOTCHES & POSITION)
+        // III. HELPER FUNCTIONS FOR ERROR CHECKS (MAPPINGS/ NOTCHES + POSITION)
 
         // Check 1. Declare check_open_file helper function: opens file and check for any errors opening file
         bool check_open_file(const char* input_configuration_file, std::ifstream& in_stream); 
@@ -55,10 +59,11 @@ class Rotor
         bool check_count_of_numbers_above_min(int count_numbers, const char* input_configuration_file); 
         
         // Check 9. Declare check_count_of_numbers_above_rotor_index helper function: checks there are enough positions for each rotor
+        // PLEASE NOTE: if there are more positions in the rotor position file than there are rotors, the extra positions are simply ignored and the configuration proceeds
         bool check_count_of_numbers_above_rotor_index(int count_numbers, int initial_rotor_index, const char* input_configuration_file, int count_rotors);
 
         
-        // III. HELPER FUNCTIONS FOR CONFIGURATION (MAPPING/ NOTCHES)
+        // IV. HELPER FUNCTIONS FOR CONFIGURATION (MAPPING/ NOTCHES)
 
         // Configure step 1. Declare insert_pair_into_mapping helper function: inserts pair into rotor mappings
         void insert_into_mapping(int& key, int& value, std::map <int, int>& mapping);
@@ -67,14 +72,14 @@ class Rotor
         void insert_into_notches_vector(int& number, std::vector <int>& vector, int count_numbers);
 
         
-        // IV. HELPER FUNCTIONS FOR CONFIGURATION (POSITION)
+        // V. HELPER FUNCTIONS FOR CONFIGURATION (POSITION)
 
         // Configure step 1. Declare select_rotor_position helper function: selects position of current rotor, using the number at the same index in the rotor position file as the rotor index (both going left to right)
         void select_rotor_position(int count_numbers, int initial_rotor_index, int current_number); 
 
 
     public: 
-        // V. CONFIGURE FUNCTIONS
+        // VI. CONFIGURE FUNCTIONS
         
         // Function 1. Declare ro_configure function: checks rotor configuration file for errors, and uses it to configure rotor maps, notches and set rotor configuration file data member
         int ro_configure_mappings_notches(const char* input_configuration_file); 
@@ -83,7 +88,7 @@ class Rotor
         int ro_configure_position(const char*input_configuration_file, int count_rotors, int initial_rotor_index, int converted_rotor_index); 
 
 
-        // VI. NOTCH MOVEMENT FUNCTIONS
+        // VII. NOTCH MOVEMENT FUNCTIONS
 
         // Function 1. Declare notch_is_hit function: determines whether notch has been reached
         bool notch_is_hit();
@@ -92,7 +97,7 @@ class Rotor
         void rotate();
 
 
-        // VII. ENCRYPT FUNCTIONS
+        // VIII. ENCRYPT FUNCTIONS
 
         // Function 1. Declare ro_encrypt function: encrypts a number that passes through the rotor
         int ro_encrypt(int input_number); 

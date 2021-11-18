@@ -43,6 +43,7 @@ int Enigma::e_configure(int count_arguments, char** string_array_arguments)
     }
 
     // Check & configure rotor. 
+    // PLEASE NOTE: if there are no rotors, the rotor position file will be ignored and its contents will not be checked for errors
     if (count_rotors != 0)
     {   
         error_returned = check_config_rotors();
@@ -51,15 +52,9 @@ int Enigma::e_configure(int count_arguments, char** string_array_arguments)
         return error_returned;
         }
     }
-    // PLEASE NOTE: if there are no rotors, the rotor position file will be ignored and its contents will not be checked for errors
-    /* if (count_rotors == 0)
-    {
-        cout << "Please note there are " << count_rotors << " rotors, so the rotor position file will be ignored and its contents will not be checked for errors \n"; // Test
-    } */
 
     // Confirm enigma has been successfully configured
     enigma_is_configured = true; 
-    /* cout << "\nSuccess! Enigma has been configured. \n"; // Test */ 
 
     return 0; 
 }
@@ -79,9 +74,6 @@ int Enigma::e_encrypt_message()
     vector <char> input_message = {};
     vector <char> encrypted_message = {};
 
-    /* // Ask user for input
-    cout << "\nWelcome to Enigma! Please input the message you wish to encrypt. The encrypted message will appear on the screen. Once this is done, press ctrl+D to close the standard input stream, get a recap, and return to command line. \n"; // Test */
-    
     // Check each character
     cin >> ws >> input_letter;
     while (!cin.eof())
@@ -96,31 +88,17 @@ int Enigma::e_encrypt_message()
         input_message.push_back(input_letter); 
 
         // Encrypt & print to screen
-        input_number = input_letter - 65; 
+        input_number = input_letter - ASCII_A_IN_DECIMAL; 
         encrypted_number = encrypt_number(input_number);
-        encrypted_letter = encrypted_number + 65; 
+        encrypted_letter = encrypted_number + ASCII_A_IN_DECIMAL; 
         cout << encrypted_letter; 
 
-        // Put into encrypted vector in case wish to repeat encrypted version of message upon conclusion (when cin stream closed by user), for testing purposes
+        // Put into encrypted vector in case wish to re-echo encrypted version of message upon conclusion (when cin stream closed by user), for testing purposes
         encrypted_message.push_back(encrypted_letter); 
 
         // Move to next character
         cin >> ws >> input_letter; 
     }
-    /* // Echo user input and result once again, when user closes cin stream // Test
-    cout << "\n \nTo recap, your message: \n"; 
-    int input_message_length = input_message.size(); 
-    for (int i = 0; i < input_message_length; i++) 
-    {
-        cout << input_message[i];
-    } 
-    cout << endl << "was encrypted to: \n"; 
-    int encrypted_message_length = encrypted_message.size(); 
-    for (int i = 0; i < encrypted_message_length; i++) 
-    {
-        cout << encrypted_message[i];
-    } 
-    cout << "\nThanks for using enigma today! \n \n"; */
 
     return 0;   
 }
@@ -179,7 +157,6 @@ int Enigma::check_config_command_line_arguments(int count_arguments, char** stri
     }
     
     // Rotor argument: there can be any number of rotors, including 0, so no check for number of rotor arguments here
-    /* cout << "Note: you have included " << check_rotor_arg << " rotor(s). \n"; // Test */
 
     // Rotor position argument: in the case of no rotors, program should still expect last file to specify rotor positions, so check included here
     if (check_rotor_position_arg != 1)
@@ -188,11 +165,8 @@ int Enigma::check_config_command_line_arguments(int count_arguments, char** stri
         return 1; 
     }
 
-    /* cout << "\nSuccess! Number of command line arguments is valid. \n"; // Test */ 
-
     // Set count of rotors data member
     count_rotors = rotor_configuration_files.size(); 
-    /* cout << "Note: to confirm, you have included " << count_rotors << " rotor(s). \n"; // Test */
 
     return 0; 
 }
@@ -224,7 +198,6 @@ int Enigma::check_config_rotors()
 
         // Put into vector of rotors
         vector_rotors.push_back(current_rotor_ptr);
-        /* cout << "Success! Rotor of initial index " << initial_rotor_index << " has been added to enigma's vector of rotors. \n"; // Test */
 
         // Increment rotor index
         initial_rotor_index++; 
@@ -238,7 +211,7 @@ int Enigma::check_config_rotors()
 bool Enigma::check_input_character(char letter)
 {
     int number = letter;
-    if (number < 65 || number > 90)
+    if (number < ASCII_A_IN_DECIMAL || number > ASCII_Z_IN_DECIMAL)
     {
         cerr << " ...ERROR. You have input an invalid character: " << letter << ". Please also check your other characters, and ensure you only include capital letters from A-Z. \n"; 
         return false;
@@ -256,34 +229,27 @@ int Enigma::move_through_rotors(int input_number)
     bool notch_was_hit = false; 
 
     // Move through rotors right to left and for each: rotate as required, and encrypt number
-    /* cout << "Moving from rotors right to left... \n"; // Test */
     for (int i = count_rotors - 1; i >= 0; i--)
     {
         // If right most rotor, rotate for every input number
         if (i == (count_rotors - 1))
         {
-            /* cout << "Rotor of initial index " << i << " so always rotates \n"; // Test */
             vector_rotors[i]->rotate();
         }
         // If not right most rotor, only rotate if notch was hit by previous rotor
         else
         {
-            /* cout << "Rotor of initial index " << i << " so only rotates if notch was hit by previous rotor \n"; // Test */
             if (notch_was_hit)
             {
-                /* cout << "Notch was hit by previous rotor so rotor of initial index " << i << " rotates \n"; // Test */
                 vector_rotors[i]->rotate();
             }
         }
 
         // Encrypt
-        /* cout << "Rotor of initial index " << i << " has encrypted " << encrypted_number << "."; // Test */
         encrypted_number = vector_rotors[i]->ro_encrypt(encrypted_number); 
-        /* cout << ". To confirm, " << encrypted_number << endl; // Test */
 
         // Check if notch was hit by current rotor, so next rotor 'knows' it needs to rotate when go back through loop
         notch_was_hit = vector_rotors[i]->notch_is_hit(); 
-        /* cout << "Notch was hit: " << notch_was_hit << ". If 1 (true), next rotor (if there is one) will rotate \n"; // Test */
     }
     return encrypted_number; 
 }
@@ -295,9 +261,7 @@ int Enigma::move_back_through_rotors(int input_number)
     // Move through rotors left to right and for each: encrypt (no rotation on the way back)
     for (int i = 0; i < count_rotors; i++)
     {
-        /* cout << "On way back, rotor of initial index " << i << " has encrypted " << encrypted_number << " to "; // Test */
         encrypted_number = vector_rotors[i]->ro_encrypt_back(encrypted_number); 
-        /* cout << encrypted_number << endl; // Test */
     }
     return encrypted_number; 
 }
@@ -326,7 +290,6 @@ int Enigma::encrypt_number(int input_number)
 
     encrypted_number = plugboard.p_encrypt(encrypted_number);
 
-    /* cout << "Enigma has encrypted " << input_number << " to " << encrypted_number << endl; // Test */ 
     return encrypted_number; 
 }
 

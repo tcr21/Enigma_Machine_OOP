@@ -7,7 +7,11 @@
 class Reflector
 {
     private:
-        // I. DATA MEMBERS
+        // I. CONSTANT VARIABLES
+        const int MAX_ALPHABET_COUNT = 26;
+        const int MAX_ALPHABET_INDEX = 25;
+        
+        // II. DATA MEMBERS
 
         // Declare configuration file for reflector
         const char* re_configuration_file; 
@@ -15,7 +19,7 @@ class Reflector
         // Declare reflector mapping
         std::map <int, int> re_mapping;
 
-        // II. HELPER FUNCTIONS FOR ERROR CHECKS
+        // III. HELPER FUNCTIONS FOR ERROR CHECKS
 
         // Check 1. Declare check_open_file helper function: opens file and check for any errors opening file
         bool check_open_file(const char* input_configuration_file, std::ifstream& in_stream); 
@@ -42,13 +46,13 @@ class Reflector
         bool check_count_of_numbers_correct(int count_numbers, const char* input_configuration_file); 
         
         
-        // III. HELPER FUNCTIONS FOR MAPPING CONFIGURATION
+        // IV. HELPER FUNCTIONS FOR MAPPING CONFIGURATION
 
         // Configure map step 1. Declare insert_pair_into_mapping helped function: inserts pair into reflector mapping
         void insert_pair_into_mapping(int& first_number, int& second_number, std::map <int, int>& mapping);
     
     public: 
-        // IV. FUNCTIONS
+        // V. FUNCTIONS
         
         // Function 1. Declare re_configure function: checks reflector configuration file for errors, and uses it to configure reflector map and set reflector configuration file data member
         int re_configure(const char* input_configuration_file); 

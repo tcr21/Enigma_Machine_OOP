@@ -13,8 +13,6 @@ using namespace std;
 // Function 1. Define p_configure function: checks plugboard configuration file for errors, and uses it to configure plugboard map and set plugboard configuration file data member
 int Plugboard::p_configure(const char input_configuration_file[100])
 {
-    /* cout << "\nStarting Plugboard configuration... \n"; // Test */
-
     // Declare input stream: used to access file
     ifstream in_stream; 
 
@@ -47,7 +45,6 @@ int Plugboard::p_configure(const char input_configuration_file[100])
 
         // Convert characters into integers
         second_number = stoi(number_array);
-        /* cout << second_number << ", "; // Test */
         
         // Check 4. Check that all numbers are a valid index (between 0-25)
         if (! check_valid_index(second_number, count_numbers, input_configuration_file))
@@ -107,16 +104,11 @@ int Plugboard::p_configure(const char input_configuration_file[100])
         return 6; 
     }
 
-    /* cout << "Success! All checks in " << input_configuration_file << " have been completed \n"; // Test */
-
     // Configure map step 2. Insert numbers excluded from file (numbers that simply map to themselves) into mapping
     insert_remaining_numbers_into_mapping(p_mapping);
 
-    /* cout << "Success! Plugboard mapping has been configured \n"; // Test */
-
     // Set plugboard configuration file data member to input file which has just been checked
     p_configuration_file = input_configuration_file;
-    /* cout << "Success! Plugboard configuration file has been set to " << p_configuration_file << endl; // Test */
 
     return 0; 
 }
@@ -124,7 +116,6 @@ int Plugboard::p_configure(const char input_configuration_file[100])
 // Function 2. Define p_encrypt function: encrypts a number that passes through the plugboard
 int Plugboard::p_encrypt(int input_number)
 {
-    /* cout << "Plugboard has encrypted " << input_number << " to " << p_mapping[input_number] << endl; // Test */
     return p_mapping[input_number]; 
 }
 
@@ -148,7 +139,7 @@ bool Plugboard::check_open_file(const char input_configuration_file[100], ifstre
 // Check 2. Define check_count_of_numbers_below_max helper function: checks number of parameters does not exceed the limit of 26. Note: we wish to return this error prior to other errors if the max number of parameters is exceeded
 bool Plugboard::check_count_of_numbers_below_max(int count_numbers, const char input_configuration_file[100])
 {
-    if (count_numbers >= 26)
+    if (count_numbers >= MAX_ALPHABET_COUNT)
     {
         cerr << "ERROR. File " << input_configuration_file << " has more than 26 parameters \n"; 
         return false;
@@ -173,7 +164,7 @@ bool Plugboard::check_numeric_characters(char number_array[10], int count_number
 // Check 4. Define check_valid_index helper function: checks that all numbers are a valid index (between 0-25)
 bool Plugboard::check_valid_index(int number, int count_numbers, const char input_configuration_file[100])
 {
-    if (number < 0 || number > 25)
+    if (number < 0 || number > MAX_ALPHABET_INDEX)
         {
             cerr << "ERROR. Invalid index: " << number << ", at position " << count_numbers << " in file " << input_configuration_file << ", is not between 0 and 25 \n"; 
             return false; 
@@ -211,7 +202,6 @@ bool Plugboard::check_count_of_numbers_even(int count_numbers, const char input_
         cerr << "ERROR. Incorrect number of plugboard parameters in file " << input_configuration_file << ": " << count_numbers << " is an odd number of parameters \n"; 
         return false; 
     }
-    /* cout << "There are " << count_numbers << " numbers in file " << input_configuration_file << endl; // Test */
     return true; 
 }            
                 
@@ -223,16 +213,14 @@ void Plugboard::insert_pair_into_mapping(int& first_number, int& second_number, 
 {
     pair <int, int> p1(first_number, second_number);
     pair <int, int> p2(second_number, first_number);
-    /* cout << p1.first << " " << p1.second << ", "; // Test */
     mapping.insert(p1);
-    /* cout << p2.first << " " << p2.second << endl; // Test */
     mapping.insert(p2);
 } 
 
 // Configure map step 2. define insert_remaining_numbers_into_mapping helper function: insert numbers excluded from file (numbers that simply map to themselves) into mapping
 void Plugboard::insert_remaining_numbers_into_mapping(map <int, int>& mapping)
 {
-    for (int number = 0; number < 26; number++)
+    for (int number = 0; number < MAX_ALPHABET_COUNT; number++)
     {
         if (mapping.find(number) == mapping.end())
         {
